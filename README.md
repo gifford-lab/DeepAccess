@@ -8,7 +8,7 @@ Classification task is binding instances of OCT4 and SOX2 from epiblast stem cel
 
 All dependencies can be installed from conda using the provided environment file:
 
-`conda env create -f ensembleNN.yml`
+`conda env create -f keras-gpu.yml`
 
 Make sure to activate environment prior to running code.
 
