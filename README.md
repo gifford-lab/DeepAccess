@@ -2,6 +2,8 @@
 
 Code for training, testing, and motif extraction from ensemble of convolutional neural networks for multilabel classification from DNA sequence.
 
+Classification task is binding instances of OCT4 and SOX2 from epiblast stem cells - GSE74636
+
 ## Dependencies
 
 All dependencies can be installed from conda using the provided environment file:
@@ -19,10 +21,10 @@ Example:
 `python train_ensemble.py data/train.fa data/train_act.txt example/`
 
 ## Testing
-Testing takes in a fasta file, a folder where the model is stored, and the name of the outfile for model predictions.
+Testing takes in a fasta file, a folder where the trained model is stored, and the name of the outfile for model predictions.
 
 Example:
-`python test_ensemble.py data/test.fa example/model_predictions.txt`
+`python test_ensemble.py data/test.fa example example/model_predictions.txt`
 
 ## Extraction
 Sequence saliency takes in a fasta file, a comparisons file for discriminative class comparisons, the prefix to store the importance for each individual model, a folder where the model is stored, and file prefix to store the model importance

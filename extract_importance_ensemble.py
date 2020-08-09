@@ -17,14 +17,16 @@ from importance_utils import *
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
-config = tf.ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.4
-config.gpu_options.allow_growth = True  # dynamically grow the memory used on the GPU
-config.allow_soft_placement = True
-sess = tf.Session(config=config)
-set_session(sess)
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+    except RuntimeError as e:
+        print(e)
 
 print(device_lib.list_local_devices())
+
 parser = argparse.ArgumentParser()
 parser.add_argument('testfasta')
 parser.add_argument('comparisons')
@@ -53,7 +55,10 @@ for comp in comps:
         c2 = [int(c) for c in comp[1].split('-')]
 
     for mi,model in enumerate(model_folders):
-        grads_i = accuracies[model.split('/')[-1]]*saliency(0,model+"/model.h5",X,c1,c2)*X
+        if mi  == 0:
+            grads_i = accuracies[model.split('/')[-1]]*saliency(0,model+"/model.h5",X,c1,c2)*X
+        else:
+            grads_i += accuracies[model.split('/')[-1]]*saliency(0,model+"/model.h5",X,c1,c2)*X
         
     # grads are a X size matrix with importance scores for each
     # sequence, for each position in the sequence

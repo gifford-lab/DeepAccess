@@ -9,21 +9,21 @@ import pickle
 from tensorflow.python.client import device_lib
 import os
 import tensorflow as tf
-from keras.backend.tensorflow_backend import set_session
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 
-config = tf.ConfigProto()
-#config.gpu_options.per_process_gpu_memory_fraction = 0.2
-config.gpu_options.allow_growth = True  # dynamically grow the memory used on the GPU
-config.allow_soft_placement = True
-sess = tf.Session(config=config)
-set_session(sess)
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+    except RuntimeError as e:
+        print(e)
 
 print(device_lib.list_local_devices())
 
-#exit()
+
 parser = argparse.ArgumentParser()
 parser.add_argument('testfasta')
 parser.add_argument('model',help="model folder")

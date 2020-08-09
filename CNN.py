@@ -13,7 +13,7 @@ class CNN():
         for i, layer in enumerate(model_layers):
             if layer == 'conv':
                 if i == 0:
-                    HOMER_motifs = list(np.load('homer_matrix.npy'))
+                    HOMER_motifs = list(np.load('homer_matrix.npy',allow_pickle=True))
                     filter_len = max([HOMER_motifs[k].shape[0] for k in range(len(HOMER_motifs))])
                     conv_layer = Conv1D(input_shape=seq_shape,
                                         filters=len(HOMER_motifs)*2,
